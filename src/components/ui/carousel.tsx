@@ -117,6 +117,7 @@ function Carousel({
 				canScrollNext,
 			}}
 		>
+			{/** biome-ignore lint/a11y/useSemanticElements: shadcn ui */}
 			<div
 				onKeyDownCapture={handleKeyDown}
 				className={cn("relative", className)}

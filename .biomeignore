@@ -7,4 +7,3 @@ public/ffmpeg/
 bun.lockb
 .git/
 .husky/ 
-src/components/ui/**

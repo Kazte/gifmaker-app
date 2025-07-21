@@ -85,7 +85,6 @@ export default function VideoPlayer({ className }: VideoPlayerProps) {
 	}, [playbackStore.volume, playbackStore.muted, playbackStore.speed]);
 
 	return (
-		// biome-ignore lint/a11y/useMediaCaption: <explanation>
 		<video
 			ref={videoRef}
 			src={appStore.videoUrl}
