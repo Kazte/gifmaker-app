@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running lint check before push..."
+bun run lint
+
+echo "Running biome check..."
+bun biome check . 
