@@ -1,7 +1,7 @@
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import useAppStore from "@/store/app.store";
 import usePlaybackStore from "@/store/playback.store";
-import { useEffect, useRef } from "react";
 
 interface VideoPlayerProps {
 	className?: string;

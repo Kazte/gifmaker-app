@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/
+*.wasm
+*.js.map
+public/ffmpeg/
+bun.lockb
+.git/
+.husky/ 
