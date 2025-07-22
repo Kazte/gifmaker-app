@@ -1,5 +1,5 @@
 import type { FFmpeg } from "@ffmpeg/ffmpeg";
-import { LoaderIcon, VideoIcon } from "lucide-react";
+import { ArrowRightIcon, LoaderIcon, TrashIcon, VideoIcon } from "lucide-react";
 import { useCallback, useEffect, useRef } from "react";
 import PlaybackControls from "./components/custom-ui/playback-controls";
 import Timeline from "./components/custom-ui/timeline";
@@ -12,9 +12,11 @@ import {
 } from "./components/ui/shadcn-io/dropzone";
 import { converToGif, initFFmpeg } from "./lib/ffmpeg";
 import useAppStore from "./store/app.store";
+import usePlaybackStore from "./store/playback.store";
 
 function App() {
 	const appStore = useAppStore();
+	const playbackStore = usePlaybackStore();
 	const ffmpegRef = useRef<FFmpeg | null>(null);
 
 	const load = useCallback(async () => {
@@ -47,9 +49,17 @@ function App() {
 			appStore.setState("executing");
 			appStore.setProgress(0);
 
-			const blob = await converToGif(appStore.files?.[0], 3, (progress) => {
-				appStore.setProgress(progress);
-			});
+			const blob = await converToGif(
+				appStore.files?.[0]!,
+				{
+					speed: playbackStore.speed,
+					trimStart: playbackStore.trimStart,
+					trimEnd: playbackStore.trimEnd,
+				},
+				(progress) => {
+					appStore.setProgress(progress);
+				},
+			);
 
 			// download the video
 			const link = document.createElement("a");
@@ -121,31 +131,36 @@ function App() {
 					<h1 className="text-2xl font-bold">gifmaker</h1>
 				</div>
 				<div className="flex items-center gap-2">
-					<Button onClick={transcode}>Transcode</Button>
+					<Button
+						onClick={() => appStore.setFiles(undefined)}
+						variant="outline"
+						disabled={!appStore.files}
+					>
+						<TrashIcon />
+						Delete
+					</Button>
+					<Button onClick={transcode} disabled={!appStore.files}>
+						<ArrowRightIcon />
+						Transcode
+					</Button>
 				</div>
 			</header>
 			{appStore.files ? (
-				<div className="flex flex-col h-[calc(100vh-4rem)]">
-					{/* Video Player Area */}
-					<main className="flex-1 flex items-center justify-center p-4 bg-black">
-						<VideoPlayer />
-					</main>
-
-					{/* Timeline */}
+				<main className="flex-1 flex flex-col items-center justify-center p-4 gap-2">
+					<VideoPlayer />
 					<Timeline />
-
-					{/* Playback Controls */}
 					<PlaybackControls />
-				</div>
+				</main>
 			) : (
 				<main className="flex flex-col justify-center items-center gap-4 flex-grow m-10">
 					<Dropzone
 						maxFiles={1}
-						maxSize={1 * 1024 * 1024}
+						maxSize={1 * 1024 * 1024 * 1024} // 1GB
 						accept={{ "video/*": [] }}
 						onDrop={handleDrop}
 						src={appStore.files}
 						onError={console.error}
+						className="cursor-pointer"
 					>
 						<DropzoneEmptyState />
 						<DropzoneContent />
