@@ -25,7 +25,11 @@ export const initFFmpeg = async (): Promise<FFmpeg> => {
 
 export async function converToGif(
 	file: File,
-	speed: number = 1,
+	options: {
+		speed: number;
+		trimStart: number;
+		trimEnd: number;
+	},
 	onProgress?: (progress: number) => void,
 ): Promise<Blob> {
 	const ffmpeg = await initFFmpeg();
@@ -46,12 +50,16 @@ export async function converToGif(
 		inputName,
 		"-vf",
 		`fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse,setpts=${
-			1 / speed
+			1 / options.speed
 		}*PTS`,
 		"-c:v",
 		"gif",
 		"-loop",
 		"0",
+		"-ss",
+		options.trimStart.toString(),
+		"-t",
+		(options.trimEnd - options.trimStart).toString(),
 		outputName,
 	]);
 
