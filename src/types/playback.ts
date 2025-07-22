@@ -6,6 +6,8 @@ export interface PlaybackState {
 	speed: number;
 	muted: boolean;
 	previousVolume?: number;
+	trimStart: number;
+	trimEnd: number;
 }
 
 export interface PlaybackControls {
@@ -18,4 +20,7 @@ export interface PlaybackControls {
 	mute: () => void;
 	unmute: () => void;
 	toggleMute: () => void;
+	setTrimStart: (time: number) => void;
+	setTrimEnd: (time: number) => void;
+	resetTrim: () => void;
 }

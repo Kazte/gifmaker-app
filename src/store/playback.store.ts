@@ -58,6 +58,8 @@ const usePlaybackStore = create<PlaybackStore>((set, get) => ({
 	speed: 1,
 	muted: false,
 	previousVolume: 1,
+	trimStart: 0,
+	trimEnd: 0,
 
 	play: () => {
 		set({ isPlaying: true });
@@ -105,7 +107,7 @@ const usePlaybackStore = create<PlaybackStore>((set, get) => ({
 		window.dispatchEvent(playbackSpeedEvent);
 	},
 
-	setDuration: (duration: number) => set({ duration }),
+	setDuration: (duration: number) => set({ duration, trimEnd: duration }),
 
 	setCurrentTime: (time: number) => set({ currentTime: time }),
 
@@ -136,6 +138,23 @@ const usePlaybackStore = create<PlaybackStore>((set, get) => ({
 		} else {
 			get().mute();
 		}
+	},
+
+	setTrimStart: (time: number) => {
+		const { duration, trimEnd } = get();
+		const clampedTime = Math.max(0, Math.min(time, trimEnd || duration));
+		set({ trimStart: clampedTime });
+	},
+
+	setTrimEnd: (time: number) => {
+		const { duration, trimStart } = get();
+		const clampedTime = Math.max(trimStart, Math.min(time, duration));
+		set({ trimEnd: clampedTime });
+	},
+
+	resetTrim: () => {
+		const { duration } = get();
+		set({ trimStart: 0, trimEnd: duration });
 	},
 }));
 
