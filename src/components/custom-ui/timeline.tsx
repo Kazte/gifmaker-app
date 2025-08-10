@@ -1,8 +1,8 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { formatTime } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import usePlaybackStore from "@/store/playback.store";
-import { useEffect, useState, useRef, useCallback } from "react";
 import { DraggableTrimMarker } from "./draggable-trim-marker";
-import { formatTime } from "@/lib/time";
 
 interface TimelineProps {
 	className?: string;

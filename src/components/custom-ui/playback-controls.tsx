@@ -1,14 +1,7 @@
-import {
-	PauseIcon,
-	PlayIcon,
-	SkipBackIcon,
-	ScissorsIcon,
-	RotateCcwIcon,
-} from "lucide-react";
+import { PauseIcon, PlayIcon, ScissorsIcon, SkipBackIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
 import usePlaybackStore from "@/store/playback.store";
-import { formatTime } from "@/lib/time";
+import { Button } from "../ui/button";
 
 interface PlaybackControlsProps {
 	className?: string;
@@ -29,11 +22,11 @@ export default function PlaybackControls({ className }: PlaybackControlsProps) {
 		playbackStore.setTrimEnd(playbackStore.currentTime);
 	}
 
-	function handleResetTrim() {
+	function _handleResetTrim() {
 		playbackStore.resetTrim();
 	}
 
-	const hasTrimPoints =
+	const _hasTrimPoints =
 		playbackStore.trimStart > 0 ||
 		playbackStore.trimEnd < playbackStore.duration;
 

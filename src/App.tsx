@@ -10,7 +10,7 @@ import {
 	DropzoneContent,
 	DropzoneEmptyState,
 } from "./components/ui/shadcn-io/dropzone";
-import { converToGif, initFFmpeg } from "./lib/ffmpeg";
+import { converToGif, getFFmpeg } from "./lib/ffmpeg";
 import useAppStore from "./store/app.store";
 import usePlaybackStore from "./store/playback.store";
 
@@ -23,7 +23,7 @@ function App() {
 		try {
 			appStore.setState("loading");
 
-			const ffmpeg = await initFFmpeg();
+			const ffmpeg = await getFFmpeg();
 			ffmpegRef.current = ffmpeg;
 
 			ffmpeg.on("log", (log) => {

@@ -4,7 +4,7 @@ import { FFmpeg } from "@ffmpeg/ffmpeg";
 
 let ffmpeg: FFmpeg | null = null;
 
-export const initFFmpeg = async (): Promise<FFmpeg> => {
+export const getFFmpeg = async (): Promise<FFmpeg> => {
 	if (ffmpeg) return ffmpeg;
 
 	try {
@@ -32,7 +32,7 @@ export async function converToGif(
 	},
 	onProgress?: (progress: number) => void,
 ): Promise<Blob> {
-	const ffmpeg = await initFFmpeg();
+	const ffmpeg = await getFFmpeg();
 
 	const inputName = "input.mp4";
 	const outputName = "output.gif";
